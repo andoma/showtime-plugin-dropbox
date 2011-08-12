@@ -1,0 +1,12 @@
+{
+  "type": "javascript",
+  "id": "dropbox",
+  "file": "dropbox.js",
+  "showtimeVersion": "3.1",
+  "version": "1.0",
+  "author": "Andreas Öman",
+  "title": "Dropbox",
+  "icon": "dropbox.png",
+  "synopsis": "Share files online",
+  "description": "Dropbox is a free service that lets you bring your photos, docs, and videos anywhere and share them easily"
+}

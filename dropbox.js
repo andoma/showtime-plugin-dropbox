@@ -35,7 +35,7 @@
 	email: credentials.username,
 	password: credentials.password,
 	oauth_consumer_key: OAUTH_CONSUMER_KEY
-      }, null, true);
+      });
       var result = showtime.JSONDecode(doc.toString());
 
       store.token  = result.token;

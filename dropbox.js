@@ -42,8 +42,6 @@ service.create("Dropbox", "dropbox:browse:", "other", true,
 
 var store = require('showtime/store').create('authinfo');
 
-print("bearer:", store.bearer);
-
 function trace(str) {
   print("dropbox:", str);
 }
@@ -66,8 +64,6 @@ function auth(authreq) {
   // We should always do that even if something fails because nothing
   // else will be able to auth dropbox requests
 
-  print("Checking", authreq.url, ", bearer:", store.bearer);
-
   if(!("bearer" in store)) {
     var trap = 'http://localhost:42000/showtime/done';
     var auth = "https://www.dropbox.com/1/oauth2/authorize?" +
@@ -75,8 +71,6 @@ function auth(authreq) {
       "redirect_uri=" + trap;
 
     var o = Showtime.webpopup(auth, "Dropbox authentication", trap);
-
-    print("webpopup", JSON.stringify(o));
 
     if(o.result != 'trapped') {
       authreq.fail(o.result);
@@ -105,8 +99,6 @@ function auth(authreq) {
       trace("Invalid token reply: " + reply, 'dropbox');
       return true;
     }
-
-    print("GOT ACCESS TOKEN", JSON.stringify(reply));
 
     store.bearer = reply.access_token;
     var db = getdb();
@@ -145,8 +137,6 @@ function updateMirror(db, forceUpdate) {
 
   var now = Date.now();
 
-  print("update Mirror now=", now);
-
   do {
     var v;
     if(store.bearer) {
@@ -155,8 +145,6 @@ function updateMirror(db, forceUpdate) {
     } else {
       v = {};
     }
-    print("lastdelta", v.lastdelta);
-    print("      now", now);
 
     if(!forceUpdate && v.lastdelta && v.lastdelta + 500000 > now) {
       // No rescan
@@ -253,12 +241,8 @@ new page.Route("dropbox:browse:(.*)", function(page, args) {
   page.type = "directory";
 
   var parentItem = { id:1, is_dir:true };
-  print(typeof args);
-  print(Duktape.info(args));
-  print(args);
   if(args) {
     var path = args.split('/');
-    print("Open: ", path);
     for(var i = 1; i < path.length && parentItem; i++)
       parentItem = getDir(db, parentItem.id, path[i]);
   } else {

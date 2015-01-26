@@ -37,7 +37,7 @@ var db = getdb();
 db.upgradeSchema(Plugin.path + "/dbschema");
 db.close();
 
-service.create("Dropbox", "dropbox:browse:", "other", true,
+service.create("Dropbox", "dropbox:browse:/", "other", true,
 	       Plugin.path + "dropbox.png");
 
 var store = require('showtime/store').create('authinfo');
@@ -241,7 +241,7 @@ new page.Route("dropbox:browse:(.*)", function(page, args) {
   page.type = "directory";
 
   var parentItem = { id:1, is_dir:true };
-  if(args) {
+  if(args && args != '/') {
     var path = args.split('/');
     for(var i = 1; i < path.length && parentItem; i++)
       parentItem = getDir(db, parentItem.id, path[i]);
